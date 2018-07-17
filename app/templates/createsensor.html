@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="row justify-content-center">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Create Sensor</h4>
+                    <h6 class="card-subtitle">Create New Sensor</h6>
+                    <div class="login-form m-t-40">
+                        <form action="" method="post" novalidate>
+                            {{ form.hidden_tag() }}
+                            <div class="form-group">
+                                <label>{{ form.device_name.label }}</label>
+                                {{ form.device_name(size=32, class="form-control", placeholder="Device Name") }}
+                                {% for error in form.device_name.erros %}
+                                <span class="text-danger">[{{ error }}]</span>
+                                {% endfor %}
+                            </div>
+                            <div class="form-group">
+                                <label>{{ form.hostname.label }}</label>
+                                {{ form.hostname(size=32, class="form-control", placeholder="Hostname") }}
+                                {% for error in form.hostname.erros %}
+                                <span class="text-danger">[{{ error }}]</span>
+                                {% endfor %}
+                            </div>
+                            <div class="form-group">
+                                <label>{{ form.ip_address.label }}</label>
+                                {{ form.ip_address(size=32, class="form-control", placeholder="IP Address") }}
+                                {% for error in form.ip_address.erros %}
+                                <span class="text-danger">[{{ error }}]</span>
+                                {% endfor %}
+                            </div>
+                            <div class="form-group">
+                                <label>{{ form.location.label }}</label>
+                                {{ form.location(size=32, class="form-control", placeholder="Location") }}
+                                {% for error in form.location.erros %}
+                                <span class="text-danger">[{{ error }}]</span>
+                                {% endfor %}
+                            </div>
+                            <div class="form-group">
+                                <label>{{ form.protected_subnet.label }}</label>
+                                {{ form.protected_subnet(size=32, class="form-control", placeholder="ex. 192.168.1.0/24") }}
+                                {% for error in form.protected_subnet.erros %}
+                                <span class="text-danger">[{{ error }}]</span>
+                                {% endfor %}
+                            </div>
+                            {{ form.submit(class="btn btn-primary btn-flat m-b-30 m-t-30") }}
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

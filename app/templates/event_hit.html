@@ -1,0 +1,68 @@
+{% extends "base.html" %} {% block content %}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Sensor Lists : {{ company }}</h4>
+                <h6 class="card-subtitle">Event Hit Summary &amp; Overview</h6>
+                <div class="row">
+                    {% for item in sensors %}
+                    <div class="col-lg-6">
+                        <div class="card">
+                            <div class="card-title">
+                                <h1>Sensor #{{ loop.index }}</h1>
+                                <h5>{{ item.device_id }}</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="card {% if item.color == 0 %}
+                                                                    bg-primary
+                                                                {% elif item.color == 1 %}
+                                                                    bg-pink
+                                                                {% elif item.color == 2 %}
+                                                                    bg-success
+                                                                {% elif item.color == 3 %}
+                                                                    bg-danger
+                                                                {% endif %}
+                                        p-20">
+                                            <div class="media widget-ten">
+                                                <div class="media-left meida media-middle">
+                                                    <span>
+                                                        <i class="ti-bag f-s-40"></i>
+                                                    </span>
+                                                </div>
+                                                <div class="media-body media-text-right">
+                                                    <h2 class="color-white">{{ item.daily_hit }}</h2>
+                                                    <p class="m-b-0">Daily Hit : {{ today }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="button-list">
+                                            <div class="btn-group btn-group-justified">
+                                                <a href="{{ url_for('event_hit', device_id=item.device_id, granularity='annually') }}" class="btn btn-primary">Annually</a>
+                                                <a href="{{ url_for('event_hit', device_id=item.device_id, granularity='monthly') }}" class="btn btn-primary">Monhtly</a>
+                                                <a href="{{ url_for('event_hit', device_id=item.device_id, granularity='daily') }}" class="btn btn-primary">Daily</a>
+                                                <a href="{{ url_for('event_hit', device_id=item.device_id, granularity='hourly') }}" class="btn btn-primary">Hourly</a>
+                                                <a href="{{ url_for('event_hit', device_id=item.device_id, granularity='minute') }}" class="btn btn-primary">Minute</a>
+                                                <a href="{{ url_for('event_hit', device_id=item.device_id, granularity='second') }}" class="btn btn-primary">Second</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

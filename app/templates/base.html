@@ -14,7 +14,7 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="Dimas Rizky HP">
-    <title>Kaspa</title>
+    <title>{{ title }} | Kaspa</title>
     <!-- Favicon Icon-->
     <link rel="icon" type="image/png" size="16x16" href="">
 
@@ -47,7 +47,7 @@
             <nav class="navbar top-navbar navbar-expand-md navbar-light">
                 <!-- Logo -->
                 <div class="navbar-header">
-                    <a class="navbar-brand" href="index.html">
+                    <a class="navbar-brand" href="{{ url_for('index') }}">
                         <!-- Logo icon -->
                         <b>
                             <img src="{{ url_for('static', filename='images/logo.png') }}" alt="homepage" class="dark-logo" />
@@ -79,166 +79,6 @@
                     <!-- User profile and search -->
                     <ul class="navbar-nav my-lg-0">
 
-                        <!-- Search -->
-                        <li class="nav-item hidden-sm-down search-box">
-                            <a class="nav-link hidden-sm-down text-muted  " href="javascript:void(0)">
-                                <i class="ti-search"></i>
-                            </a>
-                            <form class="app-search">
-                                <input type="text" class="form-control" placeholder="Search here">
-                                <a class="srh-btn">
-                                    <i class="ti-close"></i>
-                                </a>
-                            </form>
-                        </li>
-                        <!-- Comment -->
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-muted text-muted  " href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fa fa-bell"></i>
-                                <div class="notify">
-                                    <span class="heartbit"></span>
-                                    <span class="point"></span>
-                                </div>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right mailbox animated zoomIn">
-                                <ul>
-                                    <li>
-                                        <div class="drop-title">Notifications</div>
-                                    </li>
-                                    <li>
-                                        <div class="message-center">
-                                            <!-- Message -->
-                                            <a href="#">
-                                                <div class="btn btn-danger btn-circle m-r-10">
-                                                    <i class="fa fa-link"></i>
-                                                </div>
-                                                <div class="mail-contnet">
-                                                    <h5>This is title</h5>
-                                                    <span class="mail-desc">Just see the my new admin!</span>
-                                                    <span class="time">9:30 AM</span>
-                                                </div>
-                                            </a>
-                                            <!-- Message -->
-                                            <a href="#">
-                                                <div class="btn btn-success btn-circle m-r-10">
-                                                    <i class="ti-calendar"></i>
-                                                </div>
-                                                <div class="mail-contnet">
-                                                    <h5>This is another title</h5>
-                                                    <span class="mail-desc">Just a reminder that you have event</span>
-                                                    <span class="time">9:10 AM</span>
-                                                </div>
-                                            </a>
-                                            <!-- Message -->
-                                            <a href="#">
-                                                <div class="btn btn-info btn-circle m-r-10">
-                                                    <i class="ti-settings"></i>
-                                                </div>
-                                                <div class="mail-contnet">
-                                                    <h5>This is title</h5>
-                                                    <span class="mail-desc">You can customize this template as you want</span>
-                                                    <span class="time">9:08 AM</span>
-                                                </div>
-                                            </a>
-                                            <!-- Message -->
-                                            <a href="#">
-                                                <div class="btn btn-primary btn-circle m-r-10">
-                                                    <i class="ti-user"></i>
-                                                </div>
-                                                <div class="mail-contnet">
-                                                    <h5>This is another title</h5>
-                                                    <span class="mail-desc">Just see the my admin!</span>
-                                                    <span class="time">9:02 AM</span>
-                                                </div>
-                                            </a>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <a class="nav-link text-center" href="javascript:void(0);">
-                                            <strong>Check all notifications</strong>
-                                            <i class="fa fa-angle-right"></i>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-                        <!-- End Comment -->
-                        <!-- Messages -->
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-muted  " href="#" id="2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fa fa-envelope"></i>
-                                <div class="notify">
-                                    <span class="heartbit"></span>
-                                    <span class="point"></span>
-                                </div>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right mailbox animated zoomIn" aria-labelledby="2">
-                                <ul>
-                                    <li>
-                                        <div class="drop-title">You have 4 new messages</div>
-                                    </li>
-                                    <li>
-                                        <div class="message-center">
-                                            <!-- Message -->
-                                            <a href="#">
-                                                <div class="user-img">
-                                                    <img src="{{ url_for('static', filename='images/users/5.jpg') }}" alt="user" class="img-circle">
-                                                    <span class="profile-status online pull-right"></span>
-                                                </div>
-                                                <div class="mail-contnet">
-                                                    <h5>Michael Qin</h5>
-                                                    <span class="mail-desc">Just see the my admin!</span>
-                                                    <span class="time">9:30 AM</span>
-                                                </div>
-                                            </a>
-                                            <!-- Message -->
-                                            <a href="#">
-                                                <div class="user-img">
-                                                    <img src="{{ url_for('static', filename='images/users/2.jpg') }}" alt="user" class="img-circle">
-                                                    <span class="profile-status busy pull-right"></span>
-                                                </div>
-                                                <div class="mail-contnet">
-                                                    <h5>John Doe</h5>
-                                                    <span class="mail-desc">I've sung a song! See you at</span>
-                                                    <span class="time">9:10 AM</span>
-                                                </div>
-                                            </a>
-                                            <!-- Message -->
-                                            <a href="#">
-                                                <div class="user-img">
-                                                    <img src="{{ url_for('static', filename='images/users/3.jpg') }}" alt="user" class="img-circle">
-                                                    <span class="profile-status away pull-right"></span>
-                                                </div>
-                                                <div class="mail-contnet">
-                                                    <h5>Mr. John</h5>
-                                                    <span class="mail-desc">I am a singer!</span>
-                                                    <span class="time">9:08 AM</span>
-                                                </div>
-                                            </a>
-                                            <!-- Message -->
-                                            <a href="#">
-                                                <div class="user-img">
-                                                    <img src="{{ url_for('static', filename='images/users/4.jpg') }}" alt="user" class="img-circle">
-                                                    <span class="profile-status offline pull-right"></span>
-                                                </div>
-                                                <div class="mail-contnet">
-                                                    <h5>Michael Qin</h5>
-                                                    <span class="mail-desc">Just see the my admin!</span>
-                                                    <span class="time">9:02 AM</span>
-                                                </div>
-                                            </a>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <a class="nav-link text-center" href="javascript:void(0);">
-                                            <strong>See all e-Mails</strong>
-                                            <i class="fa fa-angle-right"></i>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-                        <!-- End Messages -->
                         <!-- Profile -->
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle text-muted  " href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -251,19 +91,7 @@
                                             <i class="ti-user"></i> Profile</a>
                                     </li>
                                     <li>
-                                        <a href="#">
-                                            <i class="ti-wallet"></i> Balance</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <i class="ti-email"></i> Inbox</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <i class="ti-settings"></i> Setting</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
+                                        <a href="{{ url_for('logout') }}">
                                             <i class="fa fa-power-off"></i> Logout</a>
                                     </li>
                                 </ul>
@@ -285,55 +113,39 @@
                         <li>
                             <a class="has-arrow  " href="#" aria-expanded="false">
                                 <i class="fa fa-tachometer"></i>
-                                <span class="hide-menu">Dashboard
-                                    <span class="label label-rouded label-primary pull-right">2</span>
-                                </span>
+                                <span class="hide-menu">Dashboard</span>
                             </a>
                             <ul aria-expanded="false" class="collapse">
                                 <li>
-                                    <a href="index1.html">Analytics </a>
+                                    <a href="{{ url_for('index') }}">Sensor List</a>
                                 </li>
                             </ul>
                         </li>
-                        <li class="nav-label">SENSOR &amp; STATISTIC</li>
+                        <li class="nav-label">MONITORING &amp; STATISTICS</li>
                         <li>
                             <a class="has-arrow  " href="#" aria-expanded="false">
                                 <i class="fa fa-envelope"></i>
-                                <span class="hide-menu">Sensor Statistic</span>
+                                <span class="hide-menu">Monitoring</span>
                             </a>
                             <ul aria-expanded="false" class="collapse">
                                 <li>
-                                    <a href="#">List Sensor</a>
+                                    <a href="{{ url_for('events') }}">Events</a>
                                 </li>
                                 <li>
-                                    <a href="#">Sensor Status</a>
+                                    <a href="{{ url_for('event_hit_parent') }}">Events Statistic</a>
+                                </li>
+                                <li>
+                                    <a href="{{ url_for('index') }}">Sensor Statistic</a>
+                                </li>
+                                <li>
+                                    <a href="{{ url_for('index') }}">Top Signature</a>
+                                </li>
+                                <li>
+                                    <a href="{{ url_for('index') }}">Top Protocols</a>
                                 </li>
                             </ul>
                         </li>
-                        <li>
-                            <a class="has-arrow  " href="#" aria-expanded="false">
-                                <i class="fa fa-bar-chart"></i>
-                                <span class="hide-menu">Sensor Statistic</span>
-                            </a>
-                            <ul aria-expanded="false" class="collapse">
-                                <li>
-                                    <a href="chart-flot.html">Event Hit</a>
-                                </li>
-                                <li>
-                                    <a href="chart-morris.html">Top 20 Signature</a>
-                                </li>
-                                <li>
-                                    <a href="chart-chartjs.html">Top 20 Protocol</a>
-                                </li>
-                                <li>
-                                    <a href="chart-chartist.html">Top 20 Country Source</a>
-                                </li>
-                                <li>
-                                    <a href="chart-amchart.html">Top 20 IP Source</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-label">REPORT</li>
+                        <li class="nav-label">REPORT &amp; SUMMARY</li>
                         <li>
                             <a class="has-arrow  " href="#" aria-expanded="false">
                                 <i class="fa fa-columns"></i>
@@ -341,13 +153,13 @@
                             </a>
                             <ul aria-expanded="false" class="collapse">
                                 <li>
-                                    <a href="layout-blank.html">Daily</a>
+                                    <a href="{{ url_for('index') }}">Daily</a>
                                 </li>
                                 <li>
-                                    <a href="layout-boxed.html">Monthly</a>
+                                    <a href="{{ url_for('index') }}">Monthly</a>
                                 </li>
                                 <li>
-                                    <a href="layout-fix-header.html">Anually</a>
+                                    <a href="{{ url_for('index') }}">Anually</a>
                                 </li>
                             </ul>
                         </li>
@@ -359,10 +171,10 @@
                             </a>
                             <ul aria-expanded="false" class="collapse">
                                 <li>
-                                    <a href="map-google.html">User Detail Settings</a>
+                                    <a href="{{ url_for('index') }}">User Detail Settings</a>
                                 </li>
                                 <li>
-                                    <a href="map-vector.html">Sensor Settings</a>
+                                    <a href="{{ url_for('index') }}">Sensor Settings</a>
                                 </li>
                             </ul>
                         </li>
@@ -377,15 +189,22 @@
 
             <div class="row page-titles">
                 <div class="col-md-5 align-self-center">
-                    <h3 class="text-primary">TITLE</h3>
+                    <h3 class="text-primary">{{ title }}</h3>
                 </div>
 
                 <div class="col-md-7 align-self-center">
                     <ol class="breadcrumb">
+                        {% for item in breadcrumb %}
+
+                        {% if not loop.last %}
                         <li class="breadcrumb-item">
-                            <a href="#">Home</a>
+                            <a href="{{ url_for(item.link) }}">{{ item.page }}</a>
                         </li>
-                        <li class="breadcrumb-item active">Dashboard</li>
+                        {% else %}
+                        <li class="breadcrumb-item active">{{ item.page }}</li>
+                        {% endif %}
+
+                        {% endfor %}
                     </ol>
                 </div>
             </div>
@@ -395,7 +214,7 @@
             </div>
 
             <footer class="footer">© 2018 All rights reserved. Template designed by
-                <a href="https://colorlib.com">Colorlib</a>
+                <a href="#">Colorlib</a>
             </footer>
         </div>
     </div>
@@ -412,23 +231,21 @@
     <!--stickey kit -->
     <script src="{{ url_for('static', filename='js/lib/sticky-kit-master/dist/sticky-kit.min.js') }}"></script>
 
-
-    <script src="{{ url_for('static', filename='js/lib/datamap/d3.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/lib/datamap/topojson.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/lib/datamap/datamaps.world.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/lib/datamap/datamap-init.js') }}"></script>
-
-    <script src="{{ url_for('static', filename='js/lib/weather/jquery.simpleWeather.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/lib/weather/weather-init.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/lib/owl-carousel/owl.carousel.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/lib/owl-carousel/owl.carousel-init.js') }}"></script>
-
-
-    <script src="{{ url_for('static', filename='js/lib/chartist/chartist.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/lib/chartist/chartist-plugin-tooltip.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/lib/chartist/chartist-init.js') }}"></script>
     <!--Custom JavaScript -->
     <script src="{{ url_for('static', filename='js/custom.min.js') }}"></script>
+
+    {% if request.path == "/monitoring/events" %}
+    <!-- DataTables Script -->
+    <script src="{{ url_for('static', filename='js/lib/datatables/datatables.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/lib/datatables/cdn.datatables.net/buttons/1.2.2/js/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/lib/datatables/cdn.datatables.net/buttons/1.2.2/js/buttons.flash.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/lib/datatables/cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/lib/datatables/cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/lib/datatables/cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/lib/datatables/cdn.datatables.net/buttons/1.2.2/js/buttons.html5.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/lib/datatables/cdn.datatables.net/buttons/1.2.2/js/buttons.print.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/lib/datatables/datatables-init.js') }}"></script>
+    {% endif %}
 </body>
 
 </html>

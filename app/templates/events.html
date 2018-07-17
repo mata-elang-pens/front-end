@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title"> Events : {{ company }}</h4>
+                    <h6 class="card-subtitle">Tables of Raw Events That Hit The Sensor In Company</h6>
+                    <div class="table-responsive m-t-40">
+                        <table id="eventTable" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Time</th>
+                                    <th>Signature ID</th>
+                                    <th>Alert Message</th>
+                                    <th>IP Source</th>
+                                    <th>IP Destination</th>
+                                    <th>Sensor</th>
+                                    <th>protocol</th>
+                                    <th>Attacker Port</th>
+                                    <th>Attacked Port</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for event in events %}
+                                <tr>
+                                    <td>{{ event.date_time }}</td>                                    
+                                    <td>{{ event.sig_id }}</td>
+                                    <td>{{ event.alert_msg }}</td>
+                                    <td>{{ event.src_ip }}</td>
+                                    <td>{{ event.dest_ip }}</td>
+                                    <td>{{ event.device_id }}</td>
+                                    <td>{{ event.protocol }}</td>
+                                    <td>{{ event.src_port }}</td>
+                                    <td>{{ event.dst_port }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
