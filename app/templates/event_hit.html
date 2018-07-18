@@ -4,8 +4,30 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
+                <h4 class="card-title">Event Hit : {{ company }}</h4>
+                <h6 class="card-subtitle">Event Hit Summary On All Sensor In Company</h6>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-title">
+                                <h4>Hourly Event Hit Overview : {{ today }}</h4>
+                            </div>
+                            <div class="sales-chart">
+                                <canvas id="event-hit-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
                 <h4 class="card-title">Sensor Lists : {{ company }}</h4>
-                <h6 class="card-subtitle">Event Hit Summary &amp; Overview</h6>
+                <h6 class="card-subtitle">Event Hit Summary &amp; Overview On Each Sensor</h6>
                 <div class="row">
                     {% for item in sensors %}
                     <div class="col-lg-6">
@@ -49,8 +71,7 @@
                                                 <a href="{{ url_for('event_hit', device_id=item.device_id, granularity='monthly') }}" class="btn btn-primary">Monhtly</a>
                                                 <a href="{{ url_for('event_hit', device_id=item.device_id, granularity='daily') }}" class="btn btn-primary">Daily</a>
                                                 <a href="{{ url_for('event_hit', device_id=item.device_id, granularity='hourly') }}" class="btn btn-primary">Hourly</a>
-                                                <a href="{{ url_for('event_hit', device_id=item.device_id, granularity='minute') }}" class="btn btn-primary">Minute</a>
-                                                <a href="{{ url_for('event_hit', device_id=item.device_id, granularity='second') }}" class="btn btn-primary">Second</a>
+                                                <a href="{{ url_for('event_hit', device_id=item.device_id, granularity='minute') }}" class="btn btn-primary">Per Minute</a>
                                             </div>
                                         </div>
                                     </div>
@@ -65,4 +86,86 @@
     </div>
 </div>
 
+<!-- Chart JS Script -->
+<script src="{{ url_for('static', filename='js/lib/chart-js/Chart.bundle.js') }}"></script>
+<script>
+    var data = {
+        labels : [{% for item in labels %} 
+                    "{{ item }}",
+                 {% endfor %}],
+        type: 'line',    
+        datasets : [{
+            data: [{% for item in values %}
+                    {{ item }},
+                {% endfor %}],
+            label: "Hit Count",
+            backgroundColor: 'rgba(0,103,255,.15)',
+            borderColor: 'rgba(0,103,255,0.5)',
+            borderWidth: 3.5,
+            pointStyle: 'circle',
+            pointRadius: 5,
+            pointBorderColor: 'transparent',
+            pointBackgroundColor: 'rgba(0,103,255,0.5)',
+        }],
+    };
+
+    var options = {
+        responsive: true,
+        tooltips: {
+            mode: 'index',
+            titleFontSize: 12,
+            titleFontColor: '#000',
+			bodyFontColor: '#000',
+			backgroundColor: '#fff',
+			titleFontFamily: 'Montserrat',
+			bodyFontFamily: 'Montserrat',
+			cornerRadius: 3,
+			intersect: false,
+        },
+        legend: {
+            display: false,
+            position: 'top',
+            labels: {
+                usePointStyle: true,
+                fontFamily: 'Montserrat',
+            },
+        },
+        scales: {
+            xAxes: [{
+                display: true,
+                gridLines:{
+                    display: false,
+                    drawBorder: false
+                },
+                scaleLabel: {
+                    display: false,
+                    labelString: 'Month'
+                }
+            }],
+            yAxes: [{
+                display: true,
+                gridLines: {
+                    display: false,
+                    drawBorder: false
+                },
+                scaleLabel: {
+                    display: true,
+                    labelString: 'Hit Count'
+                }
+            }]
+        },
+        title: {
+            display: false,
+        }
+    };
+
+    var ctx = document.getElementById( "event-hit-chart" );
+    ctx.height = 150;
+    var eventHitChart = new Chart(ctx,{
+        type: 'line',
+        data: data,
+        options: options
+    });
+
+</script>
 {% endblock %}

@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Top 20 Protocol Chart : {{ company }}</h4>
+                    <h6 class="card-subtitle">Pie Chart of 20 Top Attack Protocol on Company</h6>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-title">
+                                    <h4>Top 20 Protocol : {{ today }}</h4>
+                                </div>
+                                <div class="pie-chart">
+                                    <canvas id="topProtocol"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Top 20 Protocol : {{ company }}</h4>
+                    <h6 class="card-subtitle">Tables of 20 Top Attack Protocol on Company</h6>
+                    <div class="table-responsive m-t-40">
+                        <table id="topProtocolTable" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Rank #</th>
+                                    <th>Protocol</th>
+                                    <th>Hit Count</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for protocol in top_protocol %}
+                                <tr>
+                                    <td>{{ loop.index }}</td>
+                                    <td>{{ protocol.protocol }}</td>
+                                    <td>{{ protocol.value }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/lib/chart-js/Chart.bundle.js') }}"></script>
+    <script>
+        var data = {
+            labels : [{% for item in labels %}
+                        "{{ item }}",
+                    {% endfor %}],
+            datasets : [{
+                data : [{% for item in values %}
+                            {{item}},
+                        {% endfor %}],
+                
+                backgroundColor : [{% for item in colors %}
+                                    "rgba({{ item.R }}, {{ item.G }}, {{ item.B }}, 0.9)"{% if not loop.last %},{% endif %}
+                                {% endfor %}],
+                hoverBackgroundColor: [{% for item in colors %}
+                                        "rgba({{ item.R }}, {{ item.G }}, {{ item.B }}, 0.9)"{% if not loop.last %},{% endif %}
+                                    {% endfor %}],
+
+            }]
+        }
+
+        var options = {
+            responsive: true,
+            legend: {
+                display: true,
+                position: 'bottom',
+                labels: {
+                    usePointStyle: true,
+                    fontFamily: 'Montserrat',
+                },
+            },
+        }
+
+        var ctx = document.getElementById( "topProtocol" );
+        ctx.height = 100;
+        var eventHitChart = new Chart(ctx,{
+            type: 'pie',
+            data: data,
+            options: options
+        });
+        
+    </script>
+{% endblock %}

@@ -1,0 +1,188 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Event Hit on Sensor : {{ device_id }}</h4>
+                    <h6 class="card-subtitle">Event Hit Summary On Specific Sensor</h6>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <form action="" method="post" class="form-inline">
+                                {% if granularity=="monthly" %}
+                                <div class="form-group">
+                                    <label for="year">Year</label>
+                                    <input type="number" name="year" id="year" min="2018" max="{{ curyear }}" value="{{ year }}">
+                                </div>
+                                {% elif granularity=="daily" %}
+                                <div class="form-group">
+                                    <label for="month">Month</label>
+                                    <input type="month" name="year-month" id="month" min="2018-1" max="{{ curyear }}-{{ curmonth }}" value="{{ year }}-{{ month }}">
+                                </div>
+                                {% elif granularity=="hourly" %}
+                                <div class="form-group">
+                                    <label for="date">Date</label>
+                                    <input type="date" name="year-month-day" id="date" min="2018-1-1" max="{{ curyear }}-{{ curmonth }}-{{ curday }}" value="{{ year }}-{{ month }}-{{ day }}"> 
+                                </div>
+                                {% elif granularity=="minute" %}
+                                <div class="form-group">
+                                    <label for="date-hour">Date-Hour</label>
+                                    <input type="datetime-local" name="datetime" id="date-hour" value="{{ curyear }}-{{ curmonth }}-{{ curday }}T{{ curhour }}:{{ curmin }}">
+                                </div>
+                                {% endif %}
+                                <button type="submit" class="btn btn-default m-l-10">Filter</button>
+                            </form>                            
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-title">
+                                    {% if granularity=='annually' %}
+                                    <h4>({{ granularity }}) Event Hit Overview</h4> 
+                                    {% elif granularity=='monthly' %}
+                                    <h4>({{ granularity }}) Event Hit Overview : {{ year }}</h4>
+                                    {% elif granularity=='daily' %}
+                                    <h4>({{ granularity }}) Event Hit Overview : {{ year }}-{{ month }}</h4>
+                                    {% elif granularity=='hourly' %}
+                                    <h4>({{ granularity }}) Event Hit Overview : {{ year }}-{{ month }}-{{ day }}</h4>
+                                    {% elif granularity=='minute' %}
+                                    <h4>({{ granularity }}) Event Hit Overview : {{ year }}-{{ month }}-{{ day }} {{ hour }}:00</h4>
+                                    {% endif %}
+                                </div>
+                                <div class="sales-chart">
+                                    <canvas id="event-hit-dev-chart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title"> Events : {{ device_id }}</h4>
+                    <h6 class="card-subtitle">Tables of Raw Events That Hit The Sensor</h6>
+                    <div class="table-responsive m-t-40">
+                        <table id="eventTable" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Time</th>
+                                    <th>Signature ID</th>
+                                    <th>Alert Message</th>
+                                    <th>IP Source</th>
+                                    <th>IP Destination</th>
+                                    <th>protocol</th>
+                                    <th>Attacker Port</th>
+                                    <th>Attacked Port</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for event in data_event %}
+                                <tr>
+                                    <td>{{ event.date_time }}</td>                                    
+                                    <td>{{ event.sig_id }}</td>
+                                    <td>{{ event.alert_msg }}</td>
+                                    <td>{{ event.src_ip }}</td>
+                                    <td>{{ event.dest_ip }}</td>
+                                    <td>{{ event.protocol }}</td>
+                                    <td>{{ event.src_port }}</td>
+                                    <td>{{ event.dst_port }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/lib/chart-js/Chart.bundle.js') }}"></script>
+    <script>
+        var data = {
+            labels : [{% for item in labels %} 
+                        "{{ item }}",
+                     {% endfor %}],
+            type: 'line',    
+            datasets : [{
+                data: [{% for item in values %}
+                        {{ item }},
+                    {% endfor %}],
+                label: "Hit Count",
+                backgroundColor: 'rgba(0,103,255,.15)',
+                borderColor: 'rgba(0,103,255,0.5)',
+                borderWidth: 3.5,
+                pointStyle: 'circle',
+                pointRadius: 5,
+                pointBorderColor: 'transparent',
+                pointBackgroundColor: 'rgba(0,103,255,0.5)',
+            }],
+        };
+    
+        var options = {
+            responsive: true,
+            tooltips: {
+                mode: 'index',
+                titleFontSize: 12,
+                titleFontColor: '#000',
+                bodyFontColor: '#000',
+                backgroundColor: '#fff',
+                titleFontFamily: 'Montserrat',
+                bodyFontFamily: 'Montserrat',
+                cornerRadius: 3,
+                intersect: false,
+            },
+            legend: {
+                display: false,
+                position: 'top',
+                labels: {
+                    usePointStyle: true,
+                    fontFamily: 'Montserrat',
+                },
+            },
+            scales: {
+                xAxes: [{
+                    display: true,
+                    gridLines:{
+                        display: false,
+                        drawBorder: false
+                    },
+                    scaleLabel: {
+                        display: false,
+                        labelString: 'Month'
+                    }
+                }],
+                yAxes: [{
+                    display: true,
+                    gridLines: {
+                        display: false,
+                        drawBorder: false
+                    },
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Hit Count'
+                    }
+                }]
+            },
+            title: {
+                display: false,
+            }
+        };
+    
+        var ctx = document.getElementById( "event-hit-dev-chart" );
+        ctx.height = 150;
+        var eventHitChart = new Chart(ctx,{
+            type: 'line',
+            data: data,
+            options: options
+        });
+    
+    </script>
+{% endblock %}

@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Sensor Statistic</h4>
+                <h6 class="card-subtitle">Event Hit on All Sensor</h6>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-title">
+                                <h4>Hourly Event Hit Overview : {{ today }}</h4>
+                            </div>
+                            <div class="sales-chart">
+                                <canvas id="event-hit-chart-sensor"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/lib/chart-js/Chart.bundle.js') }}"></script>
+<script>
+    var data = {
+        labels : [{% for item in label_hour %} 
+                    "{{ item }}",
+                 {% endfor %}],
+        type: 'line',
+        datasets : [
+            {% for dataset in datasets %}
+
+            {
+                label: '{{ dataset.label }}',
+                data: [{% for item in dataset['data'] %}
+                            {{ item }},
+                        {% endfor %}],
+                backgroundColor: 'transparent',
+                borderColor: 'rgba({{ dataset.R }}, {{ dataset.G }}, {{ dataset.B }}, 0.75)',
+                borderWidth: 3,
+                pointStyle: 'circle',
+                pointRadius: 5,
+                pointBorderColor: 'transparent',
+                borderColor: 'rgba({{ dataset.R }}, {{ dataset.G }}, {{ dataset.B }}, 0.75)',
+            }{% if not loop.last %},{% endif %}
+
+            {% endfor %}
+        ]
+    };
+
+    var options = {
+        responsive: true,
+        tooltips: {
+            mode: 'index',
+            titleFontSize: 12,
+            titleFontColor: '#000',
+			bodyFontColor: '#000',
+			backgroundColor: '#fff',
+			titleFontFamily: 'Montserrat',
+			bodyFontFamily: 'Montserrat',
+			cornerRadius: 3,
+			intersect: false,
+        },
+        legend: {
+            display: true,
+            position: 'bottom',
+            labels: {
+                usePointStyle: true,
+                fontFamily: 'Montserrat',
+            },
+        },
+        scales: {
+            xAxes: [{
+                display: true,
+                gridLines:{
+                    display: false,
+                    drawBorder: false
+                },
+                scaleLabel: {
+                    display: false,
+                    labelString: 'Hour'
+                }
+            }],
+            yAxes: [{
+                display: true,
+                gridLines: {
+                    display: false,
+                    drawBorder: false
+                },
+                scaleLabel: {
+                    display: true,
+                    labelString: 'Hit Count'
+                }
+            }]
+        },
+        title: {
+            display: false,
+        }
+    };
+
+    var ctx = document.getElementById( "event-hit-chart-sensor" );
+    ctx.height = 150;
+    var eventHitChart = new Chart(ctx,{
+        type: 'line',
+        data: data,
+        options: options
+    });
+</script>
+
+{% endblock %}
