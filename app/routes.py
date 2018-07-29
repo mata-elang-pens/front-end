@@ -148,7 +148,7 @@ def events():
     ]
     payload = {
         "company" : "IDSIRTII",
-        "limit" : "500"
+        "limit" : "1000"
     }
     headers = {
         'content-type': 'application/json'
@@ -198,10 +198,10 @@ def event_hit_parent():
         data['sensors'][i]['daily_hit'] = str(0)
 
     payload = {
-        "company" : "IDSIRTII", #data['company'],
-        "year" : "2018", #str(datetime.now().year),
-        "month" : "7", #str(datetime.now().month),
-        "day" : "6", #str(datetime.now().day),
+        "company" : data['company'],
+        "year" : str(datetime.now().year),
+        "month" : str(datetime.now().month),
+        "day" : str(datetime.now().day),
         "limit" : "100"
     }
     headers = {
@@ -312,24 +312,25 @@ def event_hit(device_id, granularity):
     r = requests.post(url, data=json.dumps(payload), headers=headers, auth=(session['token'], "pass"))
     data = json.loads(r.text)
     hit = data['data']
-
+    print(hit)
 
     if granularity == "annually":
         for item in hit:
-            value[datetime.now().year - hit['year']] = hit['value']
+            value[datetime.now().year - item['year']] = item['value']
         value = value[::-1]
     elif granularity == "monthly":
         for item in hit:
-            value[hit['month'] - 1] = hit['value']
+            value[item['month'] - 1] = item['value']
     elif granularity == "daily":
         for item in hit:
-            value[hit['day'] - 1] = hit['value']
+            value[item['day'] - 1] = item['value']
     elif granularity == "hourly":
         for item in hit:
-            value[hit['hour']] = hit['value']
+            value[item['hour']] = item['value']
+            
     elif granularity == "minute":        
         for item in hit:
-            value[hit['minute']] = hit['value']
+            value[item['minute']] = hit['value']
         
 
     payload_event = {
@@ -535,6 +536,64 @@ def top_protocol():
         colors=colors,
         today = datetime.now().date()
     )
+
+@app.route('/monitoring/top_protocol/<protocol>', methods=['GET', 'POST'])
+@login_required
+def top_protocol_spec(protocol):
+    year = datetime.now().year
+    month = datetime.now().month
+    day = datetime.now().day
+    prot = protocol
+
+    breadcrumb = [
+        {'page' : 'Monitoring', 'link' : 'top_protocol'},
+        {'page' : 'Top Protocol : {}'.format(protocol), 'link' : 'top_protocol'}
+    ]
+
+    payload={
+        "company" : "IDSIRTII",
+        "year" : year,
+        "month" : month,
+        "day" : 6,
+        "limit" : 1000
+    }
+
+    headers = {
+        'content-type': 'application/json'
+    }
+
+    url = 'http://{}/api/statistic/v1.0/protocolbysporthit/{}'.format(os.environ.get('API_HOST'), protocol)
+    r = requests.post(url, auth=(session['token'], "pass"), data=json.dumps(payload), headers=headers)
+    data = json.loads(r.text)
+    top = sorted(data['data'], key=lambda count: count['value'], reverse=True)
+
+    labels = []
+    values = []
+    colors = []
+    for protocol in top[:20]:
+        labels.append(protocol['src_port'])
+        values.append(protocol['value'])
+        col = {
+            "R" : randint(0,255),
+            "G" : randint(0,255),
+            "B" : randint(0,255)
+        }
+        colors.append(col)
+
+    return render_template(
+        'top_protocol_spec.html',
+        title='Top 20 Port Source by Protocol',
+        breadcrumb=breadcrumb,
+        top_protocol=top[:20],
+        protocol=prot,
+        company=data['company'],
+        labels=labels,
+        values=values,
+        colors=colors,
+        today = datetime.now().date()
+    )
+
+
 
 @app.route('/logout')
 def logout():
