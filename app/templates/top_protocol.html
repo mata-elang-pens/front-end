@@ -43,7 +43,7 @@
                                 {% for protocol in top_protocol %}
                                 <tr>
                                     <td>{{ loop.index }}</td>
-                                    <td>{{ protocol.protocol }}</td>
+                                    <td><a href="{{ url_for('top_protocol_spec', protocol=protocol.protocol) }}">{{ protocol.protocol }}</a></td>
                                     <td>{{ protocol.value }}</td>
                                 </tr>
                                 {% endfor %}

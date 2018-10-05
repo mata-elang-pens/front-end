@@ -147,7 +147,7 @@ def events():
         {'page': 'Events', 'link' : 'events'}
     ]
     payload = {
-        "company" : "IDSIRTII",
+        "company" : "{}".format(current_user.company),
         "limit" : "1000"
     }
     headers = {
@@ -184,10 +184,20 @@ def events():
 @app.route('/monitoring/event_hit', methods=['GET', 'POST'])
 @login_required
 def event_hit_parent():
+    year = datetime.now().year
+    month = datetime.now().month
+    day = 29 #datetime.now().day
+    hour = datetime.now().hour
+    minute = datetime.now().minute
+    second = datetime.now().second
+
     breadcrumb = [
         {'page': 'Monitoring', 'link' : 'event_hit_parent' },
         {'page': 'Event Hit', 'link' : 'event_hit_parent'}
     ]
+    headers = {
+        'content-type': 'application/json'
+    }
 
     url = 'http://{}/api/sensors/v1.0/listsensors'.format(os.environ.get('API_HOST'))
     r = requests.post(url, auth=(session['token'], "pass"))
@@ -196,16 +206,27 @@ def event_hit_parent():
         #Check per sensors
         data['sensors'][i]['color'] = i % 4
         data['sensors'][i]['daily_hit'] = str(0)
+        payload = {
+            "year" : year,
+            "month" : month,
+            "day" : day,
+            "limit" : 100
+        }
+        
+        url = 'http://{}/api/statistic/v1.0/eventhit/{}'.format(os.environ.get('API_HOST'), data['sensors'][i]['device_id'])
+        r = requests.post(url, data=json.dumps(payload), headers=headers, auth=(session['token'], "pass"))
+        data_hit = json.loads(r.text)
+        for j in data_hit['data']:
+            if j['hour'] == hour:
+                data['sensors'][i]['daily_hit'] = str(j['value'])
+    
 
     payload = {
         "company" : data['company'],
-        "year" : str(datetime.now().year),
-        "month" : str(datetime.now().month),
-        "day" : str(datetime.now().day),
+        "year" : year,
+        "month" : month,
+        "day" : day,
         "limit" : "100"
-    }
-    headers = {
-        'content-type': 'application/json'
     }
     labels_hour = [ i+1 for i in range(24) ]
     values = [ 0 for i in range(24) ]
@@ -229,13 +250,12 @@ def event_hit_parent():
         today=datetime.now().date()
     )
 
-
 @app.route('/monitoring/events_hit/<device_id>/<granularity>', methods=['GET', 'POST'])
 @login_required
 def event_hit(device_id, granularity):
     year = datetime.now().year
     month = datetime.now().month
-    day = datetime.now().day
+    day = 29 #datetime.now().day
     hour = datetime.now().hour
     minute = datetime.now().minute
 
@@ -326,11 +346,10 @@ def event_hit(device_id, granularity):
             value[item['day'] - 1] = item['value']
     elif granularity == "hourly":
         for item in hit:
-            value[item['hour']] = item['value']
-            
+            value[item['hour']] = item['value'] 
     elif granularity == "minute":        
         for item in hit:
-            value[item['minute']] = hit['value']
+            value[item['minute']] = item['value']
         
 
     payload_event = {
@@ -376,7 +395,7 @@ def event_hit(device_id, granularity):
 def event_sensor():
     year = datetime.now().year
     month = datetime.now().month
-    day = datetime.now().day
+    day = 29 #datetime.now().day
 
     breadcrumb = [
         {'page': 'Monitoring', 'link' : 'event_sensor' },
@@ -432,7 +451,7 @@ def event_sensor():
 def top_signature():
     year = datetime.now().year
     month = datetime.now().month
-    day = datetime.now().day
+    day = 6 #datetime.now().day
 
     breadcrumb = [
         {'page' : 'Monitoring', 'link' : 'top_signature'},
@@ -440,10 +459,10 @@ def top_signature():
     ]
 
     payload={
-        "company" : "IDSIRTII",
+        "company" : "{}".format(current_user.company),
         "year" : year,
         "month" : month,
-        "day" : 6,
+        "day" : day,
         "limit" : 1000
     }
 
@@ -454,7 +473,7 @@ def top_signature():
     url = 'http://{}/api/statistic/v1.0/signaturehit'.format(os.environ.get('API_HOST'))
     r = requests.post(url, auth=(session['token'], "pass"), data=json.dumps(payload), headers=headers)
     data = json.loads(r.text)
-    top = sorted(data['data'], key=lambda count: count['value'], reverse=True)
+    top = sorted(data['data'], key=lambda count: count['value'], reverse=True)[:20]
 
     labels = []
     values = []
@@ -474,7 +493,7 @@ def top_signature():
         'top_signature.html',
         title='Top 20 Signature Hit',
         breadcrumb=breadcrumb,
-        top_signature=top[:20],
+        top_signature=top,
         company=data['company'],
         labels=labels,
         values=values,
@@ -487,7 +506,7 @@ def top_signature():
 def top_protocol():
     year = datetime.now().year
     month = datetime.now().month
-    day = datetime.now().day
+    day = 6 #datetime.now().day
 
     breadcrumb = [
         {'page' : 'Monitoring', 'link' : 'top_protocol'},
@@ -495,10 +514,10 @@ def top_protocol():
     ]
 
     payload={
-        "company" : "IDSIRTII",
+        "company" : "{}".format(current_user.company),
         "year" : year,
         "month" : month,
-        "day" : 6,
+        "day" : day,
         "limit" : 1000
     }
 
@@ -542,7 +561,7 @@ def top_protocol():
 def top_protocol_spec(protocol):
     year = datetime.now().year
     month = datetime.now().month
-    day = datetime.now().day
+    day = 6 #datetime.now().day
     prot = protocol
 
     breadcrumb = [
@@ -551,10 +570,10 @@ def top_protocol_spec(protocol):
     ]
 
     payload={
-        "company" : "IDSIRTII",
+        "company" : "{}".format(current_user.company),
         "year" : year,
         "month" : month,
-        "day" : 6,
+        "day" : day,
         "limit" : 1000
     }
 
@@ -593,7 +612,297 @@ def top_protocol_spec(protocol):
         today = datetime.now().date()
     )
 
+@app.route('/report/daily', methods=['GET', 'POST'])
+@login_required
+def report_daily():
+    year = datetime.now().year
+    month = datetime.now().month
+    day = 6 #datetime.now().day
 
+    breadcrumb = [
+        {'page' : 'Report', 'link' : 'report_daily'},
+        {'page' : 'Daily Report', 'link' : 'report_daily'}
+    ]
+
+    payload={
+        "company" : "{}".format(current_user.company),
+        "year" : year,
+        "month" : month,
+        "day" : day,
+        "limit" : 1000
+    }
+
+    headers = {
+        'content-type': 'application/json'
+    }
+
+    url_signature = 'http://{}/api/statistic/v1.0/signaturehit'.format(os.environ.get('API_HOST'))
+    url_ip_source = 'http://{}/api/statistic/v1.0/ipsourcehit'.format(os.environ.get('API_HOST'))
+    url_ip_dest = 'http://{}/api/statistic/v1.0/ipdesthit'.format(os.environ.get('API_HOST'))
+
+    r_signature = requests.post(url_signature, auth=(session['token'], "pass"), data=json.dumps(payload), headers=headers)
+    data_signature = json.loads(r_signature.text)
+    top_signature = sorted(data_signature['data'], key=lambda count: count['value'], reverse=True)[:20]
+
+    r_ip_source = requests.post(url_ip_source, auth=(session['token'], "pass"), data=json.dumps(payload), headers=headers)
+    data_ip_source = json.loads(r_ip_source.text)
+    top_ip_source = sorted(data_ip_source['data'], key=lambda count: count['value'], reverse=True)[:20]
+
+    r_ip_dest = requests.post(url_ip_dest, auth=(session['token'], "pass"), data=json.dumps(payload), headers=headers)
+    data_ip_dest = json.loads(r_ip_dest.text)
+    top_ip_dest = sorted(data_ip_dest['data'], key=lambda count: count['value'], reverse=True)[:20]
+
+    labels_signature = []
+    values_signature = []
+    colors_signature = []
+    for sign in top_signature:
+        labels_signature.append(sign['alert_msg'])
+        values_signature.append(sign['value'])
+        col = {
+            "R" : randint(0,255),
+            "G" : randint(0,255),
+            "B" : randint(0,255)
+        }
+        colors_signature.append(col)
+
+    labels_ip_source = []
+    values_ip_source = []
+    colors_ip_source = []
+    for sign in top_ip_source:
+        labels_ip_source.append(sign['src_ip'])
+        values_ip_source.append(sign['value'])
+        col = {
+            "R" : randint(0,255),
+            "G" : randint(0,255),
+            "B" : randint(0,255)
+        }
+        colors_ip_source.append(col)
+    
+    labels_ip_dest = []
+    values_ip_dest = []
+    colors_ip_dest = []
+    for sign in top_ip_dest:
+        labels_ip_dest.append(sign['dest_ip'])
+        values_ip_dest.append(sign['value'])
+        col = {
+            "R" : randint(0,255),
+            "G" : randint(0,255),
+            "B" : randint(0,255)
+        }
+        colors_ip_dest.append(col)
+
+    return render_template(
+        'daily_report.html',
+        title='Daily Report',
+        breadcrumb=breadcrumb,
+        top_signature=top_signature,
+        top_ip_source=top_ip_source,
+        top_ip_dest=top_ip_dest,
+        company=current_user.company,
+        labels_signature=labels_signature,
+        labels_ip_source=labels_ip_source,
+        labels_ip_dest=labels_ip_dest,
+        colors_signature=colors_signature,
+        colors_ip_source=colors_ip_source,
+        colors_ip_dest=colors_ip_dest,
+        values_signature=values_signature,
+        values_ip_source=values_ip_source,
+        values_ip_dest=values_ip_dest,
+        today=datetime.now().date()
+    )
+    
+@app.route('/report/monthly', methods=['GET', 'POST'])
+@login_required
+def report_monthly():
+    year = datetime.now().year
+    month = datetime.now().month
+
+    breadcrumb = [
+        {'page' : 'Report', 'link' : 'report_monthly'},
+        {'page' : 'Monthly Report', 'link' : 'report_monthly'}
+    ]
+
+    payload={
+        "company" : "{}".format(current_user.company),
+        "year" : year,
+        "month" : month,
+        "limit" : 1000
+    }
+
+    headers = {
+        'content-type': 'application/json'
+    }
+
+    url_signature = 'http://{}/api/statistic/v1.0/signaturehit'.format(os.environ.get('API_HOST'))
+    url_ip_source = 'http://{}/api/statistic/v1.0/ipsourcehit'.format(os.environ.get('API_HOST'))
+    url_ip_dest = 'http://{}/api/statistic/v1.0/ipdesthit'.format(os.environ.get('API_HOST'))
+
+    r_signature = requests.post(url_signature, auth=(session['token'], "pass"), data=json.dumps(payload), headers=headers)
+    data_signature = json.loads(r_signature.text)
+    top_signature = sorted(data_signature['data'], key=lambda count: count['value'], reverse=True)[:20]
+
+    r_ip_source = requests.post(url_ip_source, auth=(session['token'], "pass"), data=json.dumps(payload), headers=headers)
+    data_ip_source = json.loads(r_ip_source.text)
+    top_ip_source = sorted(data_ip_source['data'], key=lambda count: count['value'], reverse=True)[:20]
+
+    r_ip_dest = requests.post(url_ip_dest, auth=(session['token'], "pass"), data=json.dumps(payload), headers=headers)
+    data_ip_dest = json.loads(r_ip_dest.text)
+    top_ip_dest = sorted(data_ip_dest['data'], key=lambda count: count['value'], reverse=True)[:20]
+
+    labels_signature = []
+    values_signature = []
+    colors_signature = []
+    for sign in top_signature:
+        labels_signature.append(sign['alert_msg'])
+        values_signature.append(sign['value'])
+        col = {
+            "R" : randint(0,255),
+            "G" : randint(0,255),
+            "B" : randint(0,255)
+        }
+        colors_signature.append(col)
+
+    labels_ip_source = []
+    values_ip_source = []
+    colors_ip_source = []
+    for sign in top_ip_source:
+        labels_ip_source.append(sign['src_ip'])
+        values_ip_source.append(sign['value'])
+        col = {
+            "R" : randint(0,255),
+            "G" : randint(0,255),
+            "B" : randint(0,255)
+        }
+        colors_ip_source.append(col)
+    
+    labels_ip_dest = []
+    values_ip_dest = []
+    colors_ip_dest = []
+    for sign in top_ip_dest:
+        labels_ip_dest.append(sign['dest_ip'])
+        values_ip_dest.append(sign['value'])
+        col = {
+            "R" : randint(0,255),
+            "G" : randint(0,255),
+            "B" : randint(0,255)
+        }
+        colors_ip_dest.append(col)
+
+    return render_template(
+        'monthly_report.html',
+        title='Monthly Report',
+        breadcrumb=breadcrumb,
+        top_signature=top_signature,
+        top_ip_source=top_ip_source,
+        top_ip_dest=top_ip_dest,
+        company=current_user.company,
+        labels_signature=labels_signature,
+        labels_ip_source=labels_ip_source,
+        labels_ip_dest=labels_ip_dest,
+        colors_signature=colors_signature,
+        colors_ip_source=colors_ip_source,
+        colors_ip_dest=colors_ip_dest,
+        values_signature=values_signature,
+        values_ip_source=values_ip_source,
+        values_ip_dest=values_ip_dest,
+        today="{}-{}".format(year, month)
+    )
+    
+@app.route('/report/annually', methods=['GET', 'POST'])
+@login_required
+def report_annually():
+    year = datetime.now().year
+    month = datetime.now().month
+
+    breadcrumb = [
+        {'page' : 'Report', 'link' : 'report_annually'},
+        {'page' : 'Annually Report', 'link' : 'report_annually'}
+    ]
+
+    payload={
+        "company" : "{}".format(current_user.company),
+        "year" : year,
+        "limit" : 1000
+    }
+
+    headers = {
+        'content-type': 'application/json'
+    }
+
+    url_signature = 'http://{}/api/statistic/v1.0/signaturehit'.format(os.environ.get('API_HOST'))
+    url_ip_source = 'http://{}/api/statistic/v1.0/ipsourcehit'.format(os.environ.get('API_HOST'))
+    url_ip_dest = 'http://{}/api/statistic/v1.0/ipdesthit'.format(os.environ.get('API_HOST'))
+
+    r_signature = requests.post(url_signature, auth=(session['token'], "pass"), data=json.dumps(payload), headers=headers)
+    data_signature = json.loads(r_signature.text)
+    top_signature = sorted(data_signature['data'], key=lambda count: count['value'], reverse=True)[:20]
+
+    r_ip_source = requests.post(url_ip_source, auth=(session['token'], "pass"), data=json.dumps(payload), headers=headers)
+    data_ip_source = json.loads(r_ip_source.text)
+    top_ip_source = sorted(data_ip_source['data'], key=lambda count: count['value'], reverse=True)[:20]
+
+    r_ip_dest = requests.post(url_ip_dest, auth=(session['token'], "pass"), data=json.dumps(payload), headers=headers)
+    data_ip_dest = json.loads(r_ip_dest.text)
+    top_ip_dest = sorted(data_ip_dest['data'], key=lambda count: count['value'], reverse=True)[:20]
+
+    labels_signature = []
+    values_signature = []
+    colors_signature = []
+    for sign in top_signature:
+        labels_signature.append(sign['alert_msg'])
+        values_signature.append(sign['value'])
+        col = {
+            "R" : randint(0,255),
+            "G" : randint(0,255),
+            "B" : randint(0,255)
+        }
+        colors_signature.append(col)
+
+    labels_ip_source = []
+    values_ip_source = []
+    colors_ip_source = []
+    for sign in top_ip_source:
+        labels_ip_source.append(sign['src_ip'])
+        values_ip_source.append(sign['value'])
+        col = {
+            "R" : randint(0,255),
+            "G" : randint(0,255),
+            "B" : randint(0,255)
+        }
+        colors_ip_source.append(col)
+    
+    labels_ip_dest = []
+    values_ip_dest = []
+    colors_ip_dest = []
+    for sign in top_ip_dest:
+        labels_ip_dest.append(sign['dest_ip'])
+        values_ip_dest.append(sign['value'])
+        col = {
+            "R" : randint(0,255),
+            "G" : randint(0,255),
+            "B" : randint(0,255)
+        }
+        colors_ip_dest.append(col)
+
+    return render_template(
+        'annually_report.html',
+        title='Annually Report',
+        breadcrumb=breadcrumb,
+        top_signature=top_signature,
+        top_ip_source=top_ip_source,
+        top_ip_dest=top_ip_dest,
+        company=current_user.company,
+        labels_signature=labels_signature,
+        labels_ip_source=labels_ip_source,
+        labels_ip_dest=labels_ip_dest,
+        colors_signature=colors_signature,
+        colors_ip_source=colors_ip_source,
+        colors_ip_dest=colors_ip_dest,
+        values_signature=values_signature,
+        values_ip_source=values_ip_source,
+        values_ip_dest=values_ip_dest,
+        today="{}".format(year)
+    )
 
 @app.route('/logout')
 def logout():

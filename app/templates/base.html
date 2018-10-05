@@ -153,13 +153,13 @@
                             </a>
                             <ul aria-expanded="false" class="collapse">
                                 <li>
-                                    <a href="{{ url_for('index') }}">Daily</a>
+                                    <a href="{{ url_for('report_daily') }}">Daily</a>
                                 </li>
                                 <li>
-                                    <a href="{{ url_for('index') }}">Monthly</a>
+                                    <a href="{{ url_for('report_monthly') }}">Monthly</a>
                                 </li>
                                 <li>
-                                    <a href="{{ url_for('index') }}">Anually</a>
+                                    <a href="{{ url_for('report_annually') }}">Annually</a>
                                 </li>
                             </ul>
                         </li>
@@ -234,7 +234,6 @@
     <!--Custom JavaScript -->
     <script src="{{ url_for('static', filename='js/custom.min.js') }}"></script>
 
-    {% if request.path == "/monitoring/events" %}
     <!-- DataTables Script -->
     <script src="{{ url_for('static', filename='js/lib/datatables/datatables.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/lib/datatables/cdn.datatables.net/buttons/1.2.2/js/dataTables.buttons.min.js') }}"></script>
@@ -245,7 +244,6 @@
     <script src="{{ url_for('static', filename='js/lib/datatables/cdn.datatables.net/buttons/1.2.2/js/buttons.html5.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/lib/datatables/cdn.datatables.net/buttons/1.2.2/js/buttons.print.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/lib/datatables/datatables-init.js') }}"></script>
-    {% endif %}
 </body>
 
 </html>

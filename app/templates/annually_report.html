@@ -1,0 +1,289 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Annually Signature On {{ today }}</h4>
+                    <h6 class="card-subtitle">Attack count based on signature</h6>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-title">
+                                    <h4>Signature Chart : {{ today }}</h4>
+                                </div>
+                                <div class="pie-chart">
+                                    <canvas id="signatureCount"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-title">
+                                    <h4>Signature Table : {{ today }}</h4>
+                                </div>
+                                <div class="table-responsive m-t-40">
+                                    <table id="topSignatureTable" class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Rank #</th>
+                                                <th>Signature Name</th>
+                                                <th>Hit Count</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for signature in top_signature %}
+                                            <tr>
+                                                <td>{{ loop.index }}</td>
+                                                <td>{{ signature.alert_msg }}</td>
+                                                <td>{{ signature.value }}</td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Annually IP Source On {{ today }}</h4>
+                    <h6 class="card-subtitle">Attack count based on IP Source</h6>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-title">
+                                    <h4>IP Source Chart : {{ today }}</h4>
+                                </div>
+                                <div class="pie-chart">
+                                    <canvas id="ipSourceCount"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-title">
+                                    <h4>IP Source Table : {{ today }}</h4>
+                                </div>
+                                <div class="table-responsive m-t-40">
+                                    <table id="topIPSourceTable" class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Rank #</th>
+                                                <th>IP Source</th>
+                                                <th>Country</th>
+                                                <th>Hit Count</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for ip_source in top_ip_source %}
+                                            <tr>
+                                                <td>{{ loop.index }}</td>
+                                                <td>{{ ip_source.src_ip }}</td>
+                                                <td>{{ ip_source.country }}</td>
+                                                <td>{{ ip_source.value }}</td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Annually IP Destination On {{ today }}</h4>
+                    <h6 class="card-subtitle">Attack count based on IP Destination</h6>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-title">
+                                    <h4>IP Destination Chart : {{ today }}</h4>
+                                </div>
+                                <div class="pie-chart">
+                                    <canvas id="ipDestCount"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-title">
+                                    <h4>IP Destination Table : {{ today }}</h4>
+                                </div>
+                                <div class="table-responsive m-t-40">
+                                    <table id="topIPDestinationTable" class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Rank #</th>
+                                                <th>IP Destination</th>
+                                                <th>Country</th>
+                                                <th>Hit Count</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for ip_dest in top_ip_dest %}
+                                            <tr>
+                                                <td>{{ loop.index }}</td>
+                                                <td>{{ ip_dest.dest_ip }}</td>
+                                                <td>{{ ip_dest.country }}</td>
+                                                <td>{{ ip_dest.value }}</td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="{{ url_for('static', filename='js/lib/chart-js/Chart.bundle.js') }}"></script>
+    <script>
+        var data_signature = {
+            labels : [{% for item in labels_signature %}
+                        "{{ item }}",
+                    {% endfor %}],
+            datasets : [{
+                data : [{% for item in values_signature %}
+                            {{item}},
+                        {% endfor %}],
+                
+                backgroundColor : [{% for item in colors_signature %}
+                                    "rgba({{ item.R }}, {{ item.G }}, {{ item.B }}, 0.9)"{% if not loop.last %},{% endif %}
+                                {% endfor %}],
+                hoverBackgroundColor: [{% for item in colors_signature %}
+                                        "rgba({{ item.R }}, {{ item.G }}, {{ item.B }}, 0.9)"{% if not loop.last %},{% endif %}
+                                    {% endfor %}],
+
+            }]
+        }
+
+        var options_signature = {
+            responsive: true,
+            legend: {
+                display: true,
+                position: 'bottom',
+                labels: {
+                    usePointStyle: true,
+                    fontFamily: 'Montserrat',
+                },
+            },
+        }
+
+        var ctx_signature = document.getElementById( "signatureCount" );
+        ctx_signature.height = 150;
+        var signatureHitChart = new Chart(ctx_signature,{
+            type: 'pie',
+            data: data_signature,
+            options: options_signature
+        });
+    </script>
+
+    <script>
+        var data_ip_source = {
+            labels : [{% for item in labels_ip_source %}
+                        "{{ item }}",
+                    {% endfor %}],
+            datasets : [{
+                data : [{% for item in values_ip_source %}
+                            {{item}},
+                        {% endfor %}],
+                
+                backgroundColor : [{% for item in colors_ip_source %}
+                                    "rgba({{ item.R }}, {{ item.G }}, {{ item.B }}, 0.9)"{% if not loop.last %},{% endif %}
+                                {% endfor %}],
+                hoverBackgroundColor: [{% for item in colors_ip_source %}
+                                        "rgba({{ item.R }}, {{ item.G }}, {{ item.B }}, 0.9)"{% if not loop.last %},{% endif %}
+                                    {% endfor %}],
+
+            }]
+        }
+
+        var options_ip_source = {
+            responsive: true,
+            legend: {
+                display: true,
+                position: 'bottom',
+                labels: {
+                    usePointStyle: true,
+                    fontFamily: 'Montserrat',
+                },
+            },
+        }
+
+        var ctx_ip_source = document.getElementById( "ipSourceCount" );
+        ctx_ip_source.height = 150;
+        var ipSourceHitChart = new Chart(ctx_ip_source,{
+            type: 'pie',
+            data: data_ip_source,
+            options: options_ip_source
+        });
+    </script>
+
+    <script>
+        var data_ip_dest = {
+            labels : [{% for item in labels_ip_dest %}
+                        "{{ item }}",
+                    {% endfor %}],
+            datasets : [{
+                data : [{% for item in values_ip_dest %}
+                            {{item}},
+                        {% endfor %}],
+                
+                backgroundColor : [{% for item in colors_ip_dest %}
+                                    "rgba({{ item.R }}, {{ item.G }}, {{ item.B }}, 0.9)"{% if not loop.last %},{% endif %}
+                                {% endfor %}],
+                hoverBackgroundColor: [{% for item in colors_ip_dest %}
+                                        "rgba({{ item.R }}, {{ item.G }}, {{ item.B }}, 0.9)"{% if not loop.last %},{% endif %}
+                                    {% endfor %}],
+
+            }]
+        }
+
+        var options_ip_dest = {
+            responsive: true,
+            legend: {
+                display: true,
+                position: 'bottom',
+                labels: {
+                    usePointStyle: true,
+                    fontFamily: 'Montserrat',
+                },
+            },
+        }
+
+        var ctx_ip_dest = document.getElementById( "ipDestCount" );
+        ctx_ip_dest.height = 150;
+        var ipDestHitChart = new Chart(ctx_ip_dest,{
+            type: 'pie',
+            data: data_ip_dest,
+            options: options_ip_dest
+        });
+    </script>
+
+{% endblock %}
