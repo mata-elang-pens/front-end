@@ -11,14 +11,44 @@ import requests, json, os
 @app.route('/index')
 @login_required
 def index():
+    year = datetime.now().year
+    month = datetime.now().month
+    day = datetime.now().day
+    hour = datetime.now().hour
+    minute = datetime.now().minute
+    second = datetime.now().second
+
+    hitPerHour = 0
+
+    headers = {
+        'content-type': 'application/json'
+    }
+
     breadcrumb = [
         {'page' : 'Dashboard', 'link' : 'index'},
         {'page' : 'Sensor List', 'link' : 'index'}
     ]
-    hitPerDay = "0"
+
     url = 'http://{}/api/sensors/v1.0/listsensors'.format(os.environ.get('API_HOST'))
     r = requests.post(url, auth=(session['token'], "pass"))
     data = json.loads(r.text)
+
+    payloadHit = {
+        "company" : data['company'],
+        "year" : year,
+        "month" : month,
+        "day" : day,
+        "limit" : "100"
+    }
+    url_hit = 'http://{}/api/statistic/v1.0/eventhit'.format(os.environ.get('API_HOST'))
+    r_hit = requests.post(url_hit, auth=(session['token'], "pass"), data=json.dumps(payloadHit), headers=headers)
+    print("Status Code : {}".format(r_hit.status_code))
+    data_hit = json.loads(r_hit.text)
+
+    for item in data_hit['data']:
+        if item['hour'] == hour:
+            hitPerHour = item['value']
+
     for i in range(len(data['sensors'])):
         #Check per sensors
         data['sensors'][i]['status'] = "running" 
@@ -30,7 +60,7 @@ def index():
         sensors=data['sensors'], 
         company=data['company'], 
         numSensor=data['count'], 
-        hitPerDay=hitPerDay
+        hitPerHour=hitPerHour
     )
 
 @app.route('/index/createsensor', methods=['GET', 'POST'])
