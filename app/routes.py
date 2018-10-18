@@ -258,7 +258,7 @@ def event_hit_parent():
         "day" : day,
         "limit" : "100"
     }
-    labels_hour = [ i+1 for i in range(24) ]
+    labels_hour = [ i for i in range(24) ]
     values = [ 0 for i in range(24) ]
 
     url_hit = 'http://{}/api/statistic/v1.0/eventhit'.format(os.environ.get('API_HOST'))
