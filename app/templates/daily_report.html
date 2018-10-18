@@ -92,7 +92,7 @@
                                             {% for ip_source in top_ip_source %}
                                             <tr>
                                                 <td>{{ loop.index }}</td>
-                                                <td>{{ ip_source.ip_src }}</td>
+                                                <td>{{ ip_source.src_ip }}</td>
                                                 <td>{{ ip_source.country }}</td>
                                                 <td>{{ ip_source.value }}</td>
                                             </tr>
@@ -146,7 +146,7 @@
                                             {% for ip_dest in top_ip_dest %}
                                             <tr>
                                                 <td>{{ loop.index }}</td>
-                                                <td>{{ ip_dest.ip_src }}</td>
+                                                <td>{{ ip_dest.dest_ip }}</td>
                                                 <td>{{ ip_dest.country }}</td>
                                                 <td>{{ ip_dest.value }}</td>
                                             </tr>
