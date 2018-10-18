@@ -528,7 +528,7 @@ def top_signature():
         labels=labels,
         values=values,
         colors=colors,
-        today = datetime.now().date()
+        today = "{}-{}-{}".format(year, month, day)
     )
 
 @app.route('/monitoring/top_protocol', methods=['GET', 'POST'])
@@ -583,7 +583,7 @@ def top_protocol():
         labels=labels,
         values=values,
         colors=colors,
-        today = datetime.now().date()
+        today = "{}-{}-{}".format(year, month, day)
     )
 
 @app.route('/monitoring/top_protocol/<protocol>', methods=['GET', 'POST'])
@@ -639,7 +639,7 @@ def top_protocol_spec(protocol):
         labels=labels,
         values=values,
         colors=colors,
-        today = datetime.now().date()
+        today = "{}-{}-{}".format(year, month, day)
     )
 
 @app.route('/report/daily', methods=['GET', 'POST'])
@@ -738,7 +738,7 @@ def report_daily():
         values_signature=values_signature,
         values_ip_source=values_ip_source,
         values_ip_dest=values_ip_dest,
-        today=datetime.now().date()
+        today="{}-{}-{}".format(year, month, day)
     )
     
 @app.route('/report/monthly', methods=['GET', 'POST'])
