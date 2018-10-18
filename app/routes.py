@@ -481,7 +481,7 @@ def event_sensor():
 def top_signature():
     year = datetime.now().year
     month = datetime.now().month
-    day = datetime.now().day
+    day = datetime.now().day - 1
 
     breadcrumb = [
         {'page' : 'Monitoring', 'link' : 'top_signature'},
@@ -536,7 +536,7 @@ def top_signature():
 def top_protocol():
     year = datetime.now().year
     month = datetime.now().month
-    day = datetime.now().day
+    day = datetime.now().day - 1
 
     breadcrumb = [
         {'page' : 'Monitoring', 'link' : 'top_protocol'},
@@ -591,7 +591,7 @@ def top_protocol():
 def top_protocol_spec(protocol):
     year = datetime.now().year
     month = datetime.now().month
-    day = datetime.now().day
+    day = datetime.now().day - 1
     prot = protocol
 
     breadcrumb = [
@@ -647,7 +647,7 @@ def top_protocol_spec(protocol):
 def report_daily():
     year = datetime.now().year
     month = datetime.now().month
-    day = datetime.now().day
+    day = datetime.now().day - 1
 
     breadcrumb = [
         {'page' : 'Report', 'link' : 'report_daily'},
