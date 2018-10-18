@@ -186,7 +186,7 @@ def events():
 def event_hit_parent():
     year = datetime.now().year
     month = datetime.now().month
-    day = 29 #datetime.now().day
+    day = datetime.now().day
     hour = datetime.now().hour
     minute = datetime.now().minute
     second = datetime.now().second
@@ -255,7 +255,7 @@ def event_hit_parent():
 def event_hit(device_id, granularity):
     year = datetime.now().year
     month = datetime.now().month
-    day = 29 #datetime.now().day
+    day = datetime.now().day
     hour = datetime.now().hour
     minute = datetime.now().minute
 
@@ -395,7 +395,7 @@ def event_hit(device_id, granularity):
 def event_sensor():
     year = datetime.now().year
     month = datetime.now().month
-    day = 29 #datetime.now().day
+    day = datetime.now().day
 
     breadcrumb = [
         {'page': 'Monitoring', 'link' : 'event_sensor' },
@@ -451,7 +451,7 @@ def event_sensor():
 def top_signature():
     year = datetime.now().year
     month = datetime.now().month
-    day = 6 #datetime.now().day
+    day = datetime.now().day
 
     breadcrumb = [
         {'page' : 'Monitoring', 'link' : 'top_signature'},
@@ -506,7 +506,7 @@ def top_signature():
 def top_protocol():
     year = datetime.now().year
     month = datetime.now().month
-    day = 6 #datetime.now().day
+    day = datetime.now().day
 
     breadcrumb = [
         {'page' : 'Monitoring', 'link' : 'top_protocol'},
@@ -561,7 +561,7 @@ def top_protocol():
 def top_protocol_spec(protocol):
     year = datetime.now().year
     month = datetime.now().month
-    day = 6 #datetime.now().day
+    day = datetime.now().day
     prot = protocol
 
     breadcrumb = [
@@ -617,7 +617,7 @@ def top_protocol_spec(protocol):
 def report_daily():
     year = datetime.now().year
     month = datetime.now().month
-    day = 6 #datetime.now().day
+    day = datetime.now().day
 
     breadcrumb = [
         {'page' : 'Report', 'link' : 'report_daily'},
