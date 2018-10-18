@@ -46,19 +46,19 @@
         <div class="header">
             <nav class="navbar top-navbar navbar-expand-md navbar-light">
                 <!-- Logo -->
-                <div class="navbar-header">
-                    <a class="navbar-brand" href="{{ url_for('index') }}">
+                <!-- <div class="navbar-header">
+                    <a class="navbar-brand" href="{{ url_for('index') }}"> -->
                         <!-- Logo icon -->
-                        <b>
-                            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="homepage" class="dark-logo" />
-                        </b>
+                        <!-- <b> -->
+                            <!-- <img src="{{ url_for('static', filename='images/logo.png') }}" alt="homepage" class="dark-logo" /> -->
+                        <!-- </b> -->
                         <!--End Logo icon -->
                         <!-- Logo text -->
-                        <span>
-                            <img src="{{ url_for('static', filename='images/logo-text.png') }}" alt="homepage" class="dark-logo" />
-                        </span>
-                    </a>
-                </div>
+                        <!-- <span> -->
+                            <!-- <img src="{{ url_for('static', filename='images/logo-text.png') }}" alt="homepage" class="dark-logo" /> -->
+                        <!-- </span> -->
+                    <!-- </a> -->
+                <!-- </div> -->
                 <!-- End Logo -->
 
                 <div class="navbar-collapse">
@@ -86,10 +86,10 @@
                             </a>
                             <div class="dropdown-menu dropdown-menu-right animated zoomIn">
                                 <ul class="dropdown-user">
-                                    <li>
+                                    <!-- <li>
                                         <a href="#">
                                             <i class="ti-user"></i> Profile</a>
-                                    </li>
+                                    </li> -->
                                     <li>
                                         <a href="{{ url_for('logout') }}">
                                             <i class="fa fa-power-off"></i> Logout</a>
@@ -163,7 +163,7 @@
                                 </li>
                             </ul>
                         </li>
-                        <li class="nav-label">USER CONFIGURATION</li>
+                        <!-- <li class="nav-label">USER CONFIGURATION</li>
                         <li>
                             <a class="has-arrow  " href="#" aria-expanded="false">
                                 <i class="fa fa-map-marker"></i>
@@ -177,7 +177,7 @@
                                     <a href="{{ url_for('index') }}">Sensor Settings</a>
                                 </li>
                             </ul>
-                        </li>
+                        </li> -->
                     </ul>
                 </nav>
                 <!-- End Sidebar navigation -->
@@ -213,8 +213,8 @@
                 {% block content %} {% endblock %}
             </div>
 
-            <footer class="footer">© 2018 All rights reserved. Template designed by
-                <a href="#">Colorlib</a>
+            <footer class="footer">© 2018 All rights reserved. Crafted by
+                <a href="#">Dev Team</a>
             </footer>
         </div>
     </div>

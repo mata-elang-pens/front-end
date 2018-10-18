@@ -5,7 +5,6 @@ $(document).ready(function() {
         $('#topSportProtocolTable').DataTable();
         $('#topIPDestinationTable').DataTable();
         $('#topIPSourceTable').DataTable();
-        $('#signatureCount').DataTable();
         $(document).ready(function() {
             var table = $('#example').DataTable({
                 "columnDefs": [{
