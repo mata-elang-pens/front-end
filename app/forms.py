@@ -23,7 +23,7 @@ class RegistrationForm(FlaskForm):
     def validate_username(self, username):
         url = 'http://{}/api/users/v1.0/getuserdetail/{}'.format(os.environ.get('API_HOST'), username)
         r = requests.post(url, auth=(os.environ.get('SECRET_TOKEN'), os.environ.get('SECRET_PASS')))
-        if r.status_code != 200:
+        if r.status_code == 200:
             raise ValidationError('Please use a different username.')
 
 class CreateSensorForm(FlaskForm):
