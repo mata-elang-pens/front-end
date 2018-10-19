@@ -150,7 +150,7 @@ def register():
         last_name = form.last_name.data
         company = form.company.data
 
-        url = 'http://{}/api/users/v1.0/createuser'
+        url = 'http://{}/api/users/v1.0/createuser'.format(os.environ.get('API_HOST'))
         payload = {
             "username" : username,
             "password" : password,
