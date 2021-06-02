@@ -18,7 +18,7 @@ pylint==1.9.2
 python-dotenv==0.9.1
 requests==2.19.1
 six==1.11.0
-urllib3==1.23
+urllib3==1.26.5
 Werkzeug==0.14.1
 wrapt==1.10.11
 WTForms==2.2.1
